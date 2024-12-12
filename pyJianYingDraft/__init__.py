@@ -18,7 +18,7 @@ from .track import Track_type
 from .template_mode import Shrink_mode, Extend_mode
 from .script_file import Script_file
 from .draft_folder import Draft_folder
-from .jianying_controller import Jianying_controller
+# from .jianying_controller import Jianying_controller
 
 from .time_util import SEC, tim, trange
 
@@ -56,7 +56,7 @@ __all__ = [
     "Extend_mode",
     "Script_file",
     "Draft_folder",
-    "Jianying_controller",
+    # "Jianying_controller",
     "SEC",
     "tim",
     "trange"
