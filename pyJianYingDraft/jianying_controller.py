@@ -9,6 +9,7 @@ from typing import Optional, Literal
 from . import exceptions
 from .exceptions import AutomationError
 
+
 class Jianying_controller:
     """剪映控制器"""
 
@@ -19,6 +20,13 @@ class Jianying_controller:
     def __init__(self):
         """初始化剪映控制器, 此时剪映应该处于目录页"""
         self.get_window()
+
+    # 遍历剪映窗口中的控件
+    def print_controls(self, control, depth=7):
+        print(
+            "  " * depth + f"Control Name: {control.Name}, Control Type: {control.ControlTypeName}, ClassName: {control.ClassName}")
+        for child in control.GetChildren():
+            self.print_controls(child, depth + 1)
 
     def export_draft(self, draft_name: str, output_dir: Optional[str] = None, timeout: float = 1200) -> None:
         """导出指定的剪映草稿
@@ -38,9 +46,13 @@ class Jianying_controller:
         self.get_window()
         self.switch_to_home()
 
+        # 打印控件树
+        self.print_controls(self.app)
+
         # 点击对应草稿
         draft_name_text = self.app.TextControl(searchDepth=2,
-                                               Compare=lambda ctrl, depth: self.__draft_name_cmp(draft_name, ctrl, depth))
+                                               Compare=lambda ctrl, depth: self.__draft_name_cmp(draft_name, ctrl,
+                                                                                                 depth))
         if not draft_name_text.Exists(0):
             raise exceptions.DraftNotFound(f"未找到名为{draft_name}的剪映草稿")
         draft_btn = draft_name_text.GetParentControl()

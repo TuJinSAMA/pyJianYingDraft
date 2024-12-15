@@ -5,7 +5,7 @@ from pyJianYingDraft import Intro_type, Transition_type, trange
 
 def main():
   tutorial_asset_dir = os.path.join(os.path.dirname(__file__), 'readme_assets', 'tutorial')
-  tutorial_asset_next_dir = os.path.join(os.path.dirname(__file__), 'readme_assets', 'tutorial', '5989')
+  # tutorial_asset_next_dir = os.path.join(os.path.dirname(__file__), 'readme_assets', 'tutorial', '5989')
 
   # 创建剪映草稿
   script = draft.Script_file(1080, 1080) # 1080x1080分辨率
@@ -14,11 +14,14 @@ def main():
   script.add_track(draft.Track_type.audio).add_track(draft.Track_type.video).add_track(draft.Track_type.text)
 
   # 从本地读取音视频素材和一个gif表情包
-  audio_material = draft.Audio_material(os.path.join(tutorial_asset_next_dir, 'output_audio.mp3'))
-  video_material = draft.Video_material(os.path.join(tutorial_asset_next_dir, 'output_video.mp4'))
-  video_material1 = draft.Video_material(os.path.join(tutorial_asset_next_dir, '1.mp4'))
+  # audio_material = draft.Audio_material(os.path.join(tutorial_asset_next_dir, 'output_audio.mp3'))
+  audio_material = draft.Audio_material(os.path.join(tutorial_asset_dir, 'audio.mp3'))
+  # video_material = draft.Video_material(os.path.join(tutorial_asset_next_dir, 'output_video.mp4'))
+  video_material = draft.Video_material(os.path.join(tutorial_asset_dir, 'video.mp4'))
+  # video_material1 = draft.Video_material(os.path.join(tutorial_asset_next_dir, '1.mp4'))
   sticker_material = draft.Video_material(os.path.join(tutorial_asset_dir, 'sticker.gif'))
-  script.add_material(audio_material).add_material(video_material).add_material(sticker_material).add_material(video_material1) # 随手添加素材是好习惯
+  # .add_material(video_material1)
+  script.add_material(audio_material).add_material(video_material).add_material(sticker_material) # 随手添加素材是好习惯
 
   # 创建音频片段Ï
   audio_segment = draft.Audio_segment(audio_material,
@@ -34,14 +37,14 @@ def main():
 
   sticker_segment = draft.Video_segment(sticker_material,
                                         trange(video_segment.end, sticker_material.duration)) # 紧跟上一片段，长度与gif一致
-  sticker_segment.add_transition(Transition_type.分割)  # 注意转场添加在“前一个”视频片段上
+  # sticker_segment.add_transition(Transition_type.分割)  # 注意转场添加在“前一个”视频片段上
 
 
-  video_segment1 = draft.Video_segment(video_material1, trange(sticker_segment.end, video_material1.duration))
+  # video_segment1 = draft.Video_segment(video_material1, trange(sticker_segment.end, video_material1.duration))
 
 
   # 将上述片段添加到轨道中
-  script.add_segment(audio_segment).add_segment(video_segment).add_segment(sticker_segment).add_segment(video_segment1)
+  script.add_segment(audio_segment).add_segment(video_segment).add_segment(sticker_segment)
 
   # 创建一行类似字幕的文本片段并添加到轨道中
   text_segment = draft.Text_segment("测试字幕？?", trange(0, script.duration),  # 文本将持续整个视频（注意script.duration在上方片段添加到轨道后才会自动更新）
@@ -50,7 +53,7 @@ def main():
   script.add_segment(text_segment)
 
   # 保存草稿（覆盖掉原有的draft_content.json）
-  script.dump("/Users/baixing_ricky/Movies/JianyingPro/User Data/Projects/com.lveditor.draft/test_draft/draft_info.json")
+  script.dump(r"E:\Software\Jianying\JianyingPro Drafts\test_draft\draft_content.json")
   # script.dump("/Users/baixing_ricky/Movies/CapCut/User Data/Projects/com.lveditor.draft/1212/draft_info.json")
 
 if __name__ == '__main__':
